@@ -8,7 +8,7 @@ import com.example.chaipaisa.Dao.UserDao
 import com.example.chaipaisa.models.ChannelName
 import com.example.chaipaisa.models.User
 
-@Database(entities = [User::class,ChannelName::class], version = 1)
+@Database(entities = [User::class,ChannelName::class], version = 3)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userdao():UserDao
     abstract fun channeldao():ChanelDao
