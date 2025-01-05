@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "users")
-data class User(@PrimaryKey val id:Int ,val upi_id:String,val name:String,val status:String,val take:Int,val give:Int,val channel_id:String)
+data class User(@PrimaryKey(autoGenerate =true) val id:Int ,val upi_id:String,val name:String,val status:String,val take:Int,val give:Int,val channel_id:String)
 
 

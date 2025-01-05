@@ -1,10 +1,14 @@
 package com.example.chaipaisa.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chaipaisa.Dao.ChanelDao
 import com.example.chaipaisa.Dao.UserDao
 import com.example.chaipaisa.models.ChannelName
+import com.example.chaipaisa.models.User
 import com.example.chaipaisa.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,6 +18,20 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewmodel @Inject constructor(private val dataRepository: DataRepository):ViewModel() {
     lateinit var  newchannel:ChannelName
+
+    val allchanels :LiveData<List<ChannelName>>get() = dataRepository.Allchannels
+    val allusers:LiveData<List<User>>get() = dataRepository.Allusers
+    private val _current_Channel_id:MutableLiveData<String>get() = MutableLiveData()
+    val current_channel_id:LiveData<String>get() = _current_Channel_id
+
+    fun setcurrent_channnel_id(channel_id:String){
+
+        Log.e("CURRENTCHANNEL ID",channel_id+"here")
+
+        _current_Channel_id.value=channel_id
+    }
+
+
 
     fun Addnewchannel(channelName: String, channelType: String) {
 
@@ -30,6 +48,26 @@ class DashboardViewmodel @Inject constructor(private val dataRepository: DataRep
 
         }
 
+
+    }
+
+    fun Addnewuser(username:String,upi_id:String,channel_id: String){
+
+        val user:User =User(0,upi_id,username,"",0,0,channel_id)
+        viewModelScope.launch {
+            dataRepository.AddUsertoGroup(user)
+
+        }
+        getAlluser(channel_id)
+
+
+
+
+
+
+    }
+    fun getAlluser(channel_id:String){
+        viewModelScope.launch {  dataRepository.getUserbychannelId(channel_id)}
     }
 
 
