@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.chaipaisa.Dao.ChanelDao
 import com.example.chaipaisa.Dao.UserDao
+import com.example.chaipaisa.Dao.UserdetailsDao
 import com.example.chaipaisa.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -27,15 +28,19 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun provideuserdao(appDatabase: AppDatabase):UserDao{
-
         return appDatabase.userdao()
     }
 
     @Provides
     @Singleton
     fun providechanneldao(appDatabase: AppDatabase):ChanelDao{
-
         return appDatabase.channeldao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideuserpayments(appDatabase: AppDatabase):UserdetailsDao{
+      return appDatabase.userpaymentdao()
     }
 
 }

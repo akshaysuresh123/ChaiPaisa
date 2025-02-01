@@ -100,6 +100,7 @@ fun FragmentA(navController: NavController, viewmodel: DashboardViewmodel = hilt
     val channels by viewmodel.allchanels.observeAsState(emptyList())
 
 
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -138,7 +139,7 @@ fun FragmentA(navController: NavController, viewmodel: DashboardViewmodel = hilt
                         // For example, navigate to a detail screen or show a toast
                        //navController.navigate("channel_details/${chanel.id}")
                         viewmodel.setcurrent_channnel_id(chanel.channel_name)
-                         navController.navigate("B")
+                         navController.navigate("B/${chanel.channel_name}")
 
                         println("Channel clicked: ${chanel.channel_name}")
                     })

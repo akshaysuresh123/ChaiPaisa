@@ -1,6 +1,7 @@
 package com.example.chaipaisa.customcompose
 
-import androidx.compose.foundation.background
+import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -52,16 +52,17 @@ import com.github.mikephil.charting.data.PieEntry
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FragmentB(navController: NavController, viewmodel: DashboardViewmodel = hiltViewModel(),) {
+fun FragmentB(navController: NavController, channe_id: String ,viewmodel: DashboardViewmodel= hiltViewModel()) {
     // Variables for controlling visibility of PieChart
     var showdialog by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
     var upi_id by remember { mutableStateOf("") }
     var showPieChart by remember { mutableStateOf(true) }  // Change based on your condition
     val members by viewmodel.allusers.observeAsState(emptyList())// Example members list
-    val channe_id by viewmodel.current_channel_id.observeAsState("")
+
 
     LaunchedEffect(channe_id) {
+        Log.e("NEW CHANNEKL",channe_id)
         viewmodel.getAlluser(channe_id)
     }
 
@@ -97,7 +98,11 @@ fun FragmentB(navController: NavController, viewmodel: DashboardViewmodel = hilt
                     .padding(top = if (showPieChart) 200.dp else 0.dp)  // Adjust for PieChart height
             ) {
                 items(members) { member ->
-                    MemberCard(memberName = member.name)
+                    MemberCard(memberName = member.name,onClick={
+                        Log.e("MEMBER NAME",member.name)
+                        navController.navigate("singeluserpayment/${member.upi_id}")
+
+                    })
                 }
             }
 
@@ -142,6 +147,8 @@ fun FragmentB(navController: NavController, viewmodel: DashboardViewmodel = hilt
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Button(onClick = {
                                     // Handle "Add User" logic
+
+                                    Log.e("CHANNEL IDDDD",viewmodel.current_channel_id.value+"herer")
 
                                     viewmodel.Addnewuser(name,upi_id ,channe_id)
 
@@ -237,11 +244,12 @@ fun PieChartView(currunt_fragment:String) {
 
 // Member Card Layout for LazyColumn
 @Composable
-fun MemberCard(memberName: String) {
+fun MemberCard(memberName: String,onClick:()->Unit) {
     Card(
-        modifier = Modifier
+        modifier = Modifier.clickable { onClick() }
             .fillMaxWidth()
             .padding(8.dp),
+        // Clickable modifier added here
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(

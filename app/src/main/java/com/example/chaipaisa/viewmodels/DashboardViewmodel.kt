@@ -21,14 +21,21 @@ class DashboardViewmodel @Inject constructor(private val dataRepository: DataRep
 
     val allchanels :LiveData<List<ChannelName>>get() = dataRepository.Allchannels
     val allusers:LiveData<List<User>>get() = dataRepository.Allusers
-    private val _current_Channel_id:MutableLiveData<String>get() = MutableLiveData()
+
+    private val _current_Channel_id =MutableLiveData<String>()
     val current_channel_id:LiveData<String>get() = _current_Channel_id
+
+
+init {
+    getAlluser(current_channel_id.value.toString())
+}
 
     fun setcurrent_channnel_id(channel_id:String){
 
         Log.e("CURRENTCHANNEL ID",channel_id+"here")
 
         _current_Channel_id.value=channel_id
+        Log.e("CURRENTCHANNEL ID",current_channel_id.value+"her33e")
     }
 
 
@@ -55,10 +62,10 @@ class DashboardViewmodel @Inject constructor(private val dataRepository: DataRep
 
         val user:User =User(0,upi_id,username,"",0,0,channel_id)
         viewModelScope.launch {
-            dataRepository.AddUsertoGroup(user)
+            dataRepository.AddUsertoGroup(user,channel_id)
 
         }
-        getAlluser(channel_id)
+//        getAlluser(channel_id)
 
 
 

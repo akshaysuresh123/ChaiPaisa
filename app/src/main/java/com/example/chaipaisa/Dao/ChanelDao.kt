@@ -14,5 +14,8 @@ interface ChanelDao {
     @Query("Select * from Chanels")
     fun getAllchannel():LiveData<List<ChannelName>>
 
+    @Query("Update Chanels set activemembers=:activemembers where channel_name =:channel_id")
+    suspend fun updatechannelmenbers(activemembers:String,channel_id:String)
+
 
 }
